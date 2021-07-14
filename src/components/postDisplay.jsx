@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-
+import EditIcon from "@material-ui/icons/Edit";
+import SimpleModal from "./modal";
 class PostDisplay extends Component {
   state = {
+    open: false,
+    setOpen: false,
     currentDateTime: Date().toLocaleString(),
     count: 0,
   };
+
   incrementMe = () => {
     let newCount = this.state.count + 1;
     this.setState({
@@ -19,30 +23,13 @@ class PostDisplay extends Component {
       });
     }
   };
-  timeAgo = (prevDate) => {
-    const diff = Number(new Date()) - prevDate;
-    const minute = 60 * 1000;
-    const hour = minute * 60;
-    const day = hour * 24;
-    const month = day * 30;
-    const year = day * 365;
-    switch (true) {
-      case diff < minute:
-        const seconds = Math.round(diff / 1000);
-        return `${seconds} ${seconds > 1 ? "seconds" : "second"} ago`;
-      case diff < hour:
-        return Math.round(diff / minute) + " minutes ago";
-      case diff < day:
-        return Math.round(diff / hour) + " hours ago";
-      case diff < month:
-        return Math.round(diff / day) + " days ago";
-      case diff < year:
-        return Math.round(diff / month) + " months ago";
-      case diff > year:
-        return Math.round(diff / year) + " years ago";
-      default:
-        return "";
-    }
+  modal = () => {
+    var myModal = document.getElementById("myModal");
+    var myInput = document.getElementById("myInput");
+
+    myModal.addEventListener("shown.bs.modal", function () {
+      myInput.focus();
+    });
   };
 
   render() {
@@ -58,7 +45,6 @@ class PostDisplay extends Component {
               Abbas
               <small className="ml-4 text-muted">
                 <i className="mdi mdi-clock mr-1"></i>
-                {this.timeAgo(this.props.currentDateTime)}
               </small>
             </h6>
             <div
@@ -86,6 +72,8 @@ class PostDisplay extends Component {
             >
               Dislike
             </button>
+
+            <SimpleModal />
             <hr></hr>
           </div>
         </center>
